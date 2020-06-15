@@ -8,17 +8,19 @@ mod png;
 fn main() {
     let mut img = vec![vec![vec![0.0;3];3];3];
     let mut count = 0.0;
-    for k in 0..img.len() {
-        for i in 0..img[k].len() {
-            for j in 0..img[k][i].len() {
+    for i in 0..img.len() {
+        for j in 0..img[i].len() {
+            for k in 0..img[i][j].len() {
                 img[i][j][k] = count;
                 count += 1.0;
             }
         }
     }
     println!("{:?}", img);
-    let img = nnr::cnn::img2col(img, 2, 2, 2, 1);
+    let img = nnr::cnn::img2col(img, 2, 2, 1, 0);
     println!("{:?}",img);
+    let col = nnr::cnn::col2img(img, 3, 3, 2, 2, 0, 1);
+    println!("{:?}", col);
     /*
     let mut r = rand::thread_rng();
     let input: usize = 1;

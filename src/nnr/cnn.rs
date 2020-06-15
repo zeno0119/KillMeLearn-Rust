@@ -39,13 +39,27 @@ pub fn img2col(img: Vec<Vec<Vec<f64>>>, flt_h: usize, flt_w: usize, stride: usiz
     return res;
 }
 
-pub fn col2img(col: Vec<Vec<f64>>)->Vec<Vec<Vec<f64>>>{
-    //TODO 入力された画像の縦横のサイズを入力に加えて実装しましょう。
+pub fn col2img(col: Vec<Vec<f64>>, y_h: usize, y_w: usize, flt_h: usize, flt_w: usize, padding: usize, stride: usize) -> Vec<Vec<Vec<f64>>> {
     let channel = 3;
-    let y_h = (col.len()/channel + 2 * padding - flt_h)/ stride + 1;
-    let y_w = (col[0].len() + 2 * padding - flt_w)/ stride + 1;
 
-    let mut res = vec![vec![vec![0.0;channel];];];
+    let mut h = 0;
+    let mut w = 0; //畳み込みの始点座標
 
+    let mut res = vec![vec![vec![0.0; channel]; y_w]; y_h];
+
+    for j in 0..col[0].len() {
+        if w + flt_w - 1 >= y_w + padding * 2{
+            h += stride;
+            w = 0;
+        }
+        for i in 0..col.len() {
+            let ch = i % (flt_w * flt_h);
+            let chan = i / (flt_w * flt_h);
+            // println!("{:?}, {:?}, {:?}",ch / flt_w + h,ch % flt_w + w,i / (flt_h * flt_w));
+            // println!("{:?}", col[i][j]);
+            res[ch / flt_w + h][ch % flt_w + w][i / (flt_h * flt_w)] += col[i][j];
+        }
+        w += stride;
+    }
     return res;
 }
