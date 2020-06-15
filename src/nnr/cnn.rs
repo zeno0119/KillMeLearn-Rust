@@ -45,7 +45,7 @@ pub fn col2img(col: Vec<Vec<f64>>, y_h: usize, y_w: usize, flt_h: usize, flt_w: 
     let mut h = 0;
     let mut w = 0; //畳み込みの始点座標
 
-    let mut res = vec![vec![vec![0.0; channel]; y_w]; y_h];
+    let mut res = vec![vec![vec![0.0; channel]; y_w + padding * 2]; y_h + padding * 2];
 
     for j in 0..col[0].len() {
         if w + flt_w - 1 >= y_w + padding * 2{
@@ -61,5 +61,11 @@ pub fn col2img(col: Vec<Vec<f64>>, y_h: usize, y_w: usize, flt_h: usize, flt_w: 
         }
         w += stride;
     }
-    return res;
+    let mut padded = vec![vec![vec![0.0; channel]; y_w]; y_h];
+    for h in 0..y_h {
+        for w in 0..y_w {
+            padded[h][w] = res[h + padding][w + padding].clone();
+        }
+    }
+    return padded;
 }
