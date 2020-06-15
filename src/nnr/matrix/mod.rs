@@ -49,3 +49,27 @@ pub fn scala_prod(scala: f64, mat: &Vec<Vec<f64>>)->Vec<Vec<f64>>{
     }
     return res;
 }
+
+pub fn shrink_vec(stride: usize, x: &Vec<f64>)->Vec<f64>{
+    let mut res = vec![0.0; x.len() / stride];
+    let mut idx = 0;
+    while x.len() > idx{
+        res[idx / stride] = x[idx];
+        idx += stride;
+    }
+    return res;
+}
+
+pub fn shrink_img(x: &Vec<Vec<Vec<f64>>>, stride: usize)->Vec<Vec<Vec<f64>>>{
+    let mut i = 0;
+    let mut j = 0;
+    let mut res = vec![vec![vec![0.0; x[i][j].len()]; x[0].len() / stride]; x.len() / stride];
+    while x.len() > i {
+        while x[i].len() > j {
+            res[i / stride][j / stride] = x[i][j].clone();
+            j += stride;
+        }
+        i += stride;
+    }
+    return res;
+}

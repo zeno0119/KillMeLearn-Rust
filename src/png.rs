@@ -18,7 +18,7 @@ pub fn parse_png(str: &str) -> Vec<Vec<Vec<f64>>> {
             {
                 let mut datum: usize = 0;
 
-                while datum < data.len() {
+                while datum + 2 < data.len() {
                     let mut ele: Vec<f64> = Vec::new();
                     ele.push((data[datum] as f64 - 128.0) / 128.0);
                     ele.push((data[datum + 1] as f64 - 128.0) / 128.0);
